@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: api-gateway-core
+
+  cloud:
+    gateway:
+      routes:
+        - id: example_route
+          uri: http://adjacent-app.com
+          predicates:
+            - Path=/api/**      # Match all paths that start with /api/
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}  # Rewrite the path to remove the /api/ prefix
+            - name: CustomPluginFilter  # Apply a custom filter, replace this with your actual filter name
+
+      default-filters:
+        - AddResponseHeader=X-Response-Time, %{time}  # Add a response header to measure processing time
+
+server:
+  port: 8080  # Port on which the API Gateway will run
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG  # Enable detailed logging for Spring Cloud Gateway
+    com.beaconstrategists.apigateway: DEBUG  # Enable detailed logging for your application
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, gateway  # Expose gateway actuator endpoints for monitoring
+  endpoint:
+    health:
+      show-details: always  # Show detailed health information
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  # If using Eureka for service discovery
+    fetch-registry: true
+    register-with-eureka: true
+

@@ -1,0 +1,36 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: your-google-client-id
+            client-secret: your-google-client-secret
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: post
+            authorization-grant-type: authorization_code
+            client-name: Google
+          github:
+            client-id: your-github-client-id
+            client-secret: your-github-client-secret
+            scope: read:user
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: post
+            authorization-grant-type: authorization_code
+            client-name: GitHub
+    user:
+      name: user  # Default username for form-based login
+      password: password  # Default password for form-based login
+    form:
+      login-page: /login
+      default-target-url: /home
+      failure-url: /login?error
+
+server:
+  port: 8081  # Port for the auth module to run on, adjust if necessary
+
+logging:
+  level:
+    org.springframework.security: DEBUG  # Enable detailed logging for security-related activities
+
