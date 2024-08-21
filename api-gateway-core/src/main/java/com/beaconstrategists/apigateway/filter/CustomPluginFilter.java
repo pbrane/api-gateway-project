@@ -5,7 +5,7 @@ import com.beaconstrategists.schemavalidation.JsonSchemaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.context.annotation.Configuration;
+//import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import reactor.core.publisher.Mono;
@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.ServiceLoader;
 
-@Configuration
+//@Configuration
 public class CustomPluginFilter extends AbstractGatewayFilterFactory<CustomPluginFilter.Config> {
 
     @Autowired
