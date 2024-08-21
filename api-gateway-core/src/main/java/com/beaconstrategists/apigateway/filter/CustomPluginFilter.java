@@ -1,20 +1,21 @@
 package com.beaconstrategists.apigateway.filter;
 
-import com.beaconstrategists.plugininterface.TranslationPlugin;
-import com.beaconstrategists.schemavalidation.JsonSchemaValidator;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-//import org.springframework.context.annotation.Configuration;
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.web.server.ServerWebExchange;
+
+import com.beaconstrategists.plugininterface.TranslationPlugin;
+import com.beaconstrategists.schemavalidation.JsonSchemaValidator;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.ServiceLoader;
-
 //@Configuration
-public class CustomPluginFilter extends AbstractGatewayFilterFactory<CustomPluginFilter.Config> {
+public class CustomPluginFilter extends AbstractGatewayFilterFactory<CustomPluginFilter.Config> implements GatewayFilter {
 
     @Autowired
     private List<TranslationPlugin> translationPlugins;
@@ -24,6 +25,8 @@ public class CustomPluginFilter extends AbstractGatewayFilterFactory<CustomPlugi
 
     @Override
     public GatewayFilter apply(Config config) {
+        return null;
+        /*
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             String apiKey = request.getHeaders().getFirst("Api-Key");
@@ -35,10 +38,11 @@ public class CustomPluginFilter extends AbstractGatewayFilterFactory<CustomPlugi
 
             // Translate and validate request
             String translatedRequest = plugin.translateRequest(request.getBody().toString());
-            jsonSchemaValidator.validate(translatedRequest, loadRequestSchema(plugin));
+            //jsonSchemaValidator.validate(translatedRequest, loadRequestSchema(plugin));
 
             // Proceed with the translated request
             ServerHttpRequest modifiedRequest = exchange.getRequest().mutate().body(translatedRequest).build();
+            
             return chain.filter(exchange.mutate().request(modifiedRequest).build())
                 .then(Mono.fromRunnable(() -> {
                     // Handle and validate response
@@ -48,10 +52,22 @@ public class CustomPluginFilter extends AbstractGatewayFilterFactory<CustomPlugi
                     response.writeWith(translatedResponse);
                 }));
         };
+        */
+    }
+
+    private JsonNode loadRequestSchema(TranslationPlugin plugin) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'loadRequestSchema'");
     }
 
     public static class Config {
         // Configuration options for the filter
+    }
+
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'filter'");
     }
 }
 

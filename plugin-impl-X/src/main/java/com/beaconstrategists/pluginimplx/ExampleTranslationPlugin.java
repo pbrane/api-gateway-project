@@ -7,13 +7,15 @@ public class ExampleTranslationPlugin implements TranslationPlugin {
     @Override
     public String translateRequest(String requestPayload) {
         // Custom translation logic
-        return translatedRequest;
+        return null;
+        //return translatedRequest;
     }
 
     @Override
     public String translateResponse(String responsePayload) {
         // Custom translation logic
-        return translatedResponse;
+        return null;
+        //return translatedResponse;
     }
 
     @Override

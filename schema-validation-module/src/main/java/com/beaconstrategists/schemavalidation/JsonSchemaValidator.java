@@ -1,21 +1,18 @@
 package com.beaconstrategists.schemavalidation;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import org.reactivestreams.Publisher;
+import org.springframework.core.io.buffer.DataBuffer;
+
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.github.fge.jsonschema.core.report.ProcessingReport;
-import com.github.fge.jsonschema.main.JsonSchema;
-import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
 public class JsonSchemaValidator {
 
-    public void validate(String jsonPayload, JsonNode schemaNode) {
+    public void validate(Publisher<? extends DataBuffer> translatedResponse, JsonNode schemaNode) {
+        /*
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = null;
         try {
-            jsonNode = mapper.readTree(jsonPayload);
+            jsonNode = mapper.readTree(translatedResponse);
         } catch (JsonMappingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -43,6 +40,15 @@ public class JsonSchemaValidator {
         if (!report.isSuccess()) {
             throw new JsonValidationException(report.toString());
         }
+        */
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
     }
+
+    /*
+    public void validate(Publisher<? extends DataBuffer> translatedResponse, JsonNode requestSchema) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validate'");
+    }
+    */
 }
 
