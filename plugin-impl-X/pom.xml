@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.beaconstrategists</groupId>
         <artifactId>api-gateway-project</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>plugin-impl-X</artifactId>
