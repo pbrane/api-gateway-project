@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.gateway.route.RouteLocator;
+//import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,8 +17,8 @@ public class ApiGatewayApplicationTests {
     @Autowired
     private WebApplicationContext context;
 
-    @Autowired
-    private RouteLocator routeLocator;
+//    @Autowired
+//    private RouteLocator routeLocator;
 
     private MockMvc mockMvc;
 
