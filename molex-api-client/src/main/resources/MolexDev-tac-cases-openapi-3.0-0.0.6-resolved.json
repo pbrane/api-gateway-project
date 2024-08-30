@@ -1,0 +1,3824 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RMA_RestAPI_Design_1",
+    "description": "Customer Requirements from Excel Document RMA_RestAPI_Design 1.xlsx",
+    "version": "0.0.6"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/MolexDev/tac-cases-openapi-3.0/0.0.6",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://localhost/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "TAC_Case"
+    },
+    {
+      "name": "RMA_Case"
+    }
+  ],
+  "paths": {
+    "/tacCases": {
+      "get": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "List or find TAC Cases",
+        "description": "This operation list or find TACCase entities",
+        "operationId": "listTacCases",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "createdFrom",
+            "in": "query",
+            "description": "Beginning date portion of a date range query to search for a matching set of items",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "createdTo",
+            "in": "query",
+            "description": "Ending date portion of a date range query to search for a matching set of items",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "createdSince",
+            "in": "query",
+            "description": "Retrieve the set of items created since this date",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "caseStatus",
+            "in": "query",
+            "description": "Retrieve the set of cases with this status",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "$ref": "#/components/schemas/TacCaseStatus"
+            }
+          },
+          {
+            "name": "includeNotes",
+            "in": "query",
+            "description": "Use this flag to include Case Notes",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Result-Count": {
+                "description": "Actual number of items returned in the response body",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TacCase"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Creates a TAC Case",
+        "description": "This operation creates a tacCase entity.",
+        "operationId": "createTacCase",
+        "requestBody": {
+          "description": "The TroubleTicket to be created",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/TacCase_Create"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/TacCase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tacCases/{caseNumber}": {
+      "get": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Retrieves a TAC Case by ID",
+        "description": "This operation retrieves a tacCase entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "retrieveTacCase",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeNotes",
+            "in": "query",
+            "description": "Use this flag to include Case Notes",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/TacCase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Updates a TAC Case by ID",
+        "description": "This operation updates a tacCase entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "updateTacCase",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated the associated TAC Case",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/TacCase"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tacCases/{caseNumber}/notes": {
+      "get": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Get notes for a specific TAC Case",
+        "description": "Retrieve a list of notes attached to a specific item by its TAC Case Number.",
+        "operationId": "getTacCaseNotes",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "createdFrom",
+            "in": "query",
+            "description": "Beginning date portion of a date range query to search for a matching set of items",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "createdTo",
+            "in": "query",
+            "description": "Ending date portion of a date range query to search for a matching set of items",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "createdSince",
+            "in": "query",
+            "description": "Retrieve the set of items created since this date",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of notes attached to the specified item.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Note"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Creates a note assocated with a TAC Case",
+        "description": "This operation creates adds a Case Note to a TAC Case",
+        "operationId": "createTacCaseNote",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The TroubleTicket to be created",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/Note_Create"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tacCases/{caseNumber}/notes/{id}": {
+      "get": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Retrieves a TAC Case Note by ID",
+        "description": "This operation retrieves a CaseNote entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "retrieveTacCaseNote",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of an entity.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Updates a TAC Case Note by ID",
+        "description": "This operation updates a TAC Case Note. Attribute selection is enabled for all first level attributes.",
+        "operationId": "updateTacCaseNote",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of an entity.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated the associated TAC Case",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/Note"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tacCases/{caseNumber}/attachments": {
+      "get": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Get a list of attachments for a specific TAC case",
+        "operationId": "getTacCaseAttachments",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of attachments associated with the TAC case.",
+            "headers": {
+              "X-Result-Count": {
+                "description": "Actual number of items returned in the response body",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Attachment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Upload an attachment to a specific TAC case",
+        "operationId": "uploadTacCaseAttachment",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Attachment file to upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/caseNumber_attachments_body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Attachment successfully uploaded.",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tacCases/{caseNumber}/attachments/{id}": {
+      "get": {
+        "tags": [
+          "TAC_Case"
+        ],
+        "summary": "Retrieves a TAC Case Attachment by ID",
+        "description": "This operation retrieves an TAC Case Attachment",
+        "operationId": "retrieveTacCaseAttachment",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of an entity.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An attachment associated a TAC case",
+            "headers": {
+              "X-Result-Count": {
+                "description": "Actual number of attachments returned in the response body",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "maximum": 1,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "maximum": 1,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Attachment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rmaCases": {
+      "get": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "List or find RMA Cases",
+        "description": "This operation list or find RMA Cases",
+        "operationId": "listRmaCases",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "createdFrom",
+            "in": "query",
+            "description": "Beginning date portion of a date range query to search for a matching set of items",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "createdTo",
+            "in": "query",
+            "description": "Ending date portion of a date range query to search for a matching set of items",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "createdSince",
+            "in": "query",
+            "description": "Retrieve the set of items created since this date",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "caseStatus",
+            "in": "query",
+            "description": "Retrieve the set of cases with this status",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "$ref": "#/components/schemas/TacCaseStatus"
+            }
+          },
+          {
+            "name": "vendorRmaNumber",
+            "in": "query",
+            "description": "Retrieve the set of cases with this RMA number",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeNotes",
+            "in": "query",
+            "description": "Use this flag to include Case Notes",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Result-Count": {
+                "description": "Actual number of items returned in the response body",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RmaCase"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Creates an RMA",
+        "description": "This operation creates a tacRma entity.",
+        "operationId": "createTacRma",
+        "requestBody": {
+          "description": "The TroubleTicket to be created",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/RmaCase_Create"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/RmaCase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rmaCases/{caseNumber}": {
+      "get": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Retrieves an RMA Case by ID",
+        "description": "This operation retrieves a RmaCase entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "retrieveRmaCase",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Comma-separated properties to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeNotes",
+            "in": "query",
+            "description": "Use this flag to include Case Notes",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/RmaCase"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Updates an RMA Case by ID",
+        "description": "This operation updates a RmaCase entity. Attribute selection is enabled for all first level attributes.",
+        "operationId": "updateRmaCase",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated the associated RMA Case",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/RmaCase"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rmaCases/{caseNumber}/notes": {
+      "get": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Get notes for a specific RMA",
+        "description": "Retrieve a list of notes attached to a specific RMA Case by its case number.",
+        "operationId": "getRmaCaseNotes",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "createdFrom",
+            "in": "query",
+            "description": "Beginning date portion of a date range query to search for a matching set of items",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "createdTo",
+            "in": "query",
+            "description": "Ending date portion of a date range query to search for a matching set of items",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "createdSince",
+            "in": "query",
+            "description": "Retrieve the set of items created since this date",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of notes attached to the specified RMA Case.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Note"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Creates a note assocated with a RMA Case",
+        "description": "This operation creates adds a Case Note to a TAC Case",
+        "operationId": "createRmaCaseNote",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The TroubleTicket to be created",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/Note_Create"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rmaCases/{caseNumber}/notes/{id}": {
+      "get": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Retrieves an RMA Case Note by ID",
+        "description": "This operation retrieves an RMA CaseNote. Attribute selection is enabled for all first level attributes.",
+        "operationId": "retrieveRmaCaseNote",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of an entity.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Updates an RMA Case Note by ID",
+        "description": "This operation updates an RMA Case Note. Attribute selection is enabled for all first level attributes.",
+        "operationId": "updateRmaCaseNote",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of an entity.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated the associated TAC Case",
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/schemas/Note"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rmaCases/{caseNumber}/attachments": {
+      "get": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Get a list of attachments for a specific RMA case",
+        "operationId": "getRmaCaseAttachments",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Requested index for start of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Requested number of items to be provided in response",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of attachments associated with the RMA case.",
+            "headers": {
+              "X-Result-Count": {
+                "description": "Actual number of items returned in the response body",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Attachment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Upload an attachment to a specific RMA case",
+        "operationId": "uploadRmaCaseAttachment",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Attachment file to upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/caseNumber_attachments_body_1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Attachment successfully uploaded.",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_201"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rmaCases/{caseNumber}/attachments/{id}": {
+      "get": {
+        "tags": [
+          "RMA_Case"
+        ],
+        "summary": "Retrieves an RMA Case Attachment by ID",
+        "description": "This operation retrieves an RMA Case Attachment",
+        "operationId": "retrieveRmaCaseAttachment",
+        "parameters": [
+          {
+            "name": "caseNumber",
+            "in": "path",
+            "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of an entity.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An attachment associated a RMA case",
+            "headers": {
+              "X-Result-Count": {
+                "description": "Actual number of attachments returned in the response body",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "maximum": 1,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "X-Total-Count": {
+                "description": "Total number of items matching criteria",
+                "style": "simple",
+                "explode": false,
+                "schema": {
+                  "maximum": 1,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Attachment"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json;charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommonCreateCaseProperties": {
+        "type": "object",
+        "properties": {
+          "requestDate": {
+            "type": "string",
+            "description": "The date on which the TAC Case create was requested",
+            "format": "date-time"
+          },
+          "requestorOrganization": {
+            "type": "string",
+            "description": "The Organization that is requesting the TAC Case",
+            "example": "[\"MSFT\"]"
+          },
+          "requestorFirstName": {
+            "type": "string"
+          },
+          "requestorLastName": {
+            "type": "string"
+          },
+          "requestorEmail": {
+            "format": "email"
+          },
+          "requestorPhone": {
+            "format": "phone"
+          },
+          "installationCountry": {
+            "type": "string",
+            "format": "country"
+          },
+          "networkStatus": {
+            "type": "string",
+            "enum": [
+              "Production",
+              "Test",
+              "Development"
+            ]
+          },
+          "businessImpact": {
+            "type": "string",
+            "description": "The impact to the customer's business associated with this Case",
+            "example": "[\"Critical level business impacting issue\",\"Major level business impacting issue\",\"Minor level business impacting issue\",\"Warning level business impacting issue\"]"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject of TAC Case"
+          },
+          "problemDescription": {
+            "type": "string",
+            "description": "Description of the issue in this case"
+          },
+          "productName": {
+            "type": "string",
+            "description": "The name of the product associated with this TAC Case"
+          },
+          "productSerialNumber": {
+            "type": "string",
+            "description": "The serial number of the product associated with this TAC Case"
+          },
+          "productFirmwareVersion": {
+            "type": "string",
+            "description": "The version number of the product associated with this TAC Case"
+          },
+          "productSoftwareVersion": {
+            "type": "string",
+            "description": "The version number of the product associated with this TAC Case"
+          },
+          "outageStartTime": {
+            "type": "string",
+            "description": "The date and time that the outage associated with this case was detected",
+            "format": "date-time"
+          },
+          "outageRecoveryTime": {
+            "type": "string",
+            "description": "The date and time that the outage associated with this case was recovered",
+            "format": "date-time"
+          },
+          "customerTrackingNumber": {
+            "type": "string",
+            "description": "A Reference to the customer's issue associated with this Case"
+          }
+        }
+      },
+      "CommonNoteProperties": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "type": "string",
+            "description": "Author of the note"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of the note",
+            "format": "date-time"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text of the note"
+          }
+        }
+      },
+      "RmaCase": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          },
+          "caseNumber": {
+            "type": "string"
+          },
+          "caseId": {
+            "type": "string"
+          },
+          "relatedTacCaseId": {
+            "type": "string"
+          },
+          "requestType": {
+            "type": "string"
+          },
+          "newPartSerialNumber": {
+            "type": "string"
+          },
+          "FaultySerialNumber": {
+            "type": "string"
+          },
+          "FaultyPartNumber": {
+            "type": "string"
+          },
+          "ReturnedSerialNumber": {
+            "type": "string"
+          },
+          "ReturnedPartNumber": {
+            "type": "string"
+          },
+          "CaseStatus": {
+            "$ref": "#/components/schemas/TacCaseStatus"
+          },
+          "NewPartShippedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "NewPartDeliveredDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "FaultyPartShippedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "FaultyPartDeliveredDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "FailureAnalysisStartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "FailureAnalysisInProgressDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "FailureAnalysisFinishedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ShipToStreet1": {
+            "type": "string"
+          },
+          "ShipToProvince": {
+            "type": "string"
+          },
+          "ShipToPostalCode": {
+            "type": "string"
+          },
+          "ShipToPhone": {
+            "type": "string",
+            "format": "phone"
+          },
+          "ShipToCountry": {
+            "type": "string",
+            "format": "country"
+          },
+          "ShipToCity": {
+            "type": "string"
+          },
+          "ShipToContactEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "ShipToAttention": {
+            "type": "string"
+          },
+          "ShippedDate": {
+            "type": "string"
+          },
+          "ShippedCarrier": {
+            "type": "string"
+          },
+          "ProblemDescription": {
+            "type": "string"
+          },
+          "InstallationCountry": {
+            "type": "string",
+            "format": "country"
+          },
+          "CustomerTrackingNumber": {
+            "type": "string"
+          },
+          "ContactEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "VendorRmaNumber": {
+            "type": "string",
+            "format": "integer"
+          }
+        },
+        "description": "An RMA Case"
+      },
+      "RmaCase_Create": {
+        "required": [
+          "description",
+          "severity",
+          "ticketType"
+        ],
+        "type": "object",
+        "properties": {
+          "relatedTacCaseId": {
+            "type": "string",
+            "description": "This assumes that an RMA case is a child case to an existing TAC Case"
+          },
+          "faultySerialNumber": {
+            "type": "string",
+            "description": "This is the serial number of the faulty device requiring the RMA"
+          },
+          "RequesterShippingFirstName": {
+            "type": "string"
+          },
+          "RequesterShippingLastName": {
+            "type": "string"
+          },
+          "RequesterShippingEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "RequesterShippingPhone": {
+            "type": "string",
+            "format": "phone"
+          },
+          "RequesterShippingStreet": {
+            "type": "string"
+          },
+          "RequesterShippingCity": {
+            "type": "string"
+          },
+          "RequesterShippingStateProvince": {
+            "type": "string"
+          },
+          "RequesterShippingCountry": {
+            "type": "string"
+          },
+          "RequesterShippingPostalCode": {
+            "type": "string"
+          },
+          "ShippingInboundId": {
+            "type": "string"
+          },
+          "ShippingOutboundId": {
+            "type": "string"
+          }
+        },
+        "description": "A TAC Case is a record of an issue that is created, tracked, and managed by the TAC Case management system\nSkipped properties: id,href",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CommonCreateCaseProperties"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "TacCase": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the TAC Case"
+          },
+          "href": {
+            "type": "string",
+            "description": "Hyperlink, a reference to the TAC Case entity"
+          },
+          "caseNumber": {
+            "type": "string",
+            "description": "Same as ID, requested by customer"
+          },
+          "caseStatus": {
+            "$ref": "#/components/schemas/TacCaseStatus"
+          },
+          "rmaNeeded": {
+            "type": "boolean",
+            "description": "TAC indicates RMA is required"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Subject of TAC Case"
+          },
+          "relatedRmaCount": {
+            "type": "integer",
+            "description": "Number of RMAs related to this TAC Case"
+          },
+          "relatedDispatchCount": {
+            "type": "integer",
+            "description": "Number of dispatches related to this TAC Case"
+          },
+          "problemDescription": {
+            "type": "string",
+            "description": "A description of the problem assocated with this TAC Case"
+          },
+          "installationCountry": {
+            "maxLength": 2,
+            "minLength": 2,
+            "type": "string",
+            "example": "[\"US\",\"CA\",\"CN\",\"MX\",\"UK\"]"
+          },
+          "firstResponseDate": {
+            "type": "string",
+            "description": "The date of first response from the TAC to this Case",
+            "format": "date-time"
+          },
+          "customerTrackingNumber": {
+            "type": "string",
+            "description": "A Reference to the customer's issue associated with this Case"
+          },
+          "contactEmail": {
+            "type": "string",
+            "description": "The email of the customer contact related to this Case",
+            "format": "email"
+          },
+          "productName": {
+            "type": "string",
+            "description": "The name of the product associated with this TAC Case"
+          },
+          "productSerialNumber": {
+            "type": "string",
+            "description": "The serial number of the product associcated with this TAC Case"
+          },
+          "productFirmwareVersion": {
+            "type": "string",
+            "description": "The version number of the product associcated with this TAC Case"
+          },
+          "productSoftwareVersion": {
+            "type": "string",
+            "description": "The version number of the product associcated with this TAC Case"
+          },
+          "caseSolutionDescription": {
+            "type": "string",
+            "description": "A general summary of the solution to this Case"
+          },
+          "casePriority": {
+            "type": "string",
+            "description": "The priorty assigned by TAC to this Case",
+            "enum": [
+              "Critical",
+              "Major",
+              "Minor"
+            ]
+          },
+          "caseOwner": {
+            "type": "string",
+            "description": "The TAC name associated with the ownership of this Case"
+          },
+          "caseNoteCount": {
+            "type": "integer",
+            "description": "The number of notes associated with this Case"
+          },
+          "caseCreatedDate": {
+            "type": "string",
+            "description": "The date this Case was created by Customer",
+            "format": "date-time"
+          },
+          "caseClosedDate": {
+            "type": "string",
+            "description": "The date this Case was closed by Customer or TAC",
+            "format": "date-time"
+          },
+          "businessImpact": {
+            "type": "string",
+            "description": "The impact to the customer's business associated with this Case",
+            "example": "[\"Critical level business impacting issue\",\"Major level business impacting issue\",\"Minor level business impacting issue\",\"Warning level business impacting issue\"]"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "The customer's account number associated with this ticket"
+          },
+          "notes": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Note"
+            }
+          }
+        },
+        "description": "A TAC Case"
+      },
+      "TacCase_Create": {
+        "required": [
+          "description",
+          "severity",
+          "ticketType"
+        ],
+        "type": "object",
+        "description": "A TAC Case is a record of an issue that is created, tracked, and managed by the TAC management system Skipped properties: id,href",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CommonCreateCaseProperties"
+          }
+        ]
+      },
+      "Note": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the note within its containing entity (may or may not be globally unique, depending on provider implementation)"
+          }
+        },
+        "description": "Extra information about a given TAC Case",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CommonNoteProperties"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "Note_Create": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "type": "string",
+            "description": "Author of the note"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date of the note",
+            "format": "date-time"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text of the note"
+          }
+        },
+        "description": "Extra information about a given TAC Case"
+      },
+      "Attachment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this particular attachment"
+          },
+          "href": {
+            "type": "string",
+            "description": "URI for this Attachment"
+          },
+          "attachmentType": {
+            "type": "string",
+            "description": "Attachment type such as video, picture"
+          },
+          "content": {
+            "type": "string",
+            "description": "The actual contents of the attachment object, if embedded, encoded as base64"
+          },
+          "description": {
+            "type": "string",
+            "description": "A narrative text describing the content of the attachment"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "Attachment mime type such as extension file for video, picture and document"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the attachment"
+          },
+          "url": {
+            "type": "string",
+            "description": "Uniform Resource Locator, is a web page address (a subset of URI)"
+          },
+          "size": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Complements the description of an element (for instance a product) through video, pictures..."
+      },
+      "AttachmentRef": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique-Identifier for this attachment"
+          },
+          "href": {
+            "type": "string",
+            "description": "URL serving as reference for the attachment resource"
+          },
+          "description": {
+            "type": "string",
+            "description": "A narrative text describing the content of the attachment"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the related entity."
+          },
+          "url": {
+            "type": "string",
+            "description": "Link to the attachment media/content"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation."
+          }
+        },
+        "description": "Attachment reference. An attachment complements the description of an element (for instance a product) through video, pictures"
+      },
+      "AttachmentRefOrValue": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this particular attachment"
+          },
+          "href": {
+            "type": "string",
+            "description": "URI for this Attachment"
+          },
+          "attachmentType": {
+            "type": "string",
+            "description": "Attachment type such as video, picture"
+          },
+          "content": {
+            "type": "string",
+            "description": "The actual contents of the attachment object, if embedded, encoded as base64"
+          },
+          "description": {
+            "type": "string",
+            "description": "A narrative text describing the content of the attachment"
+          },
+          "mimeType": {
+            "type": "string",
+            "description": "Attachment mime type such as extension file for video, picture and document"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the attachment"
+          },
+          "url": {
+            "type": "string",
+            "description": "Uniform Resource Locator, is a web page address (a subset of URI)"
+          },
+          "size": {
+            "$ref": "#/components/schemas/Quantity"
+          },
+          "validFor": {
+            "$ref": "#/components/schemas/TimePeriod"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          },
+          "@referredType": {
+            "type": "string",
+            "description": "The actual type of the target instance when needed for disambiguation."
+          }
+        },
+        "description": "An attachment by value or by reference. For AttachmentRefOrValue, the attribute type,schemaLocation and referredType are related to the contained entity and not to AttchmentRefOrValue itself"
+      },
+      "Quantity": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Numeric value in a given unit",
+            "format": "float",
+            "default": 1
+          },
+          "units": {
+            "type": "string",
+            "description": "Unit"
+          }
+        },
+        "description": "An amount in a given unit"
+      },
+      "TimePeriod": {
+        "type": "object",
+        "properties": {
+          "endDateTime": {
+            "type": "string",
+            "description": "End of the time period, using IETC-RFC-3339 format",
+            "format": "date-time"
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "Start of the time period, using IETC-RFC-3339 format. If you define a start, you must also define an end",
+            "format": "date-time"
+          }
+        },
+        "description": "A period of time, either as a deadline (endDateTime only) a startDateTime only, or both"
+      },
+      "CaseRelationship": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the Trouble Ticket"
+          },
+          "href": {
+            "type": "string",
+            "description": "Reference of the Trouble Ticket"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the Trouble Ticket"
+          },
+          "relationshipType": {
+            "type": "string",
+            "description": "Type of the  Trouble Ticket relationship can be isChiled, dependent etc..."
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class"
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name"
+          }
+        },
+        "description": "Represents a relationship between trouble Trouble Tickets"
+      },
+      "TacCaseStatus": {
+        "type": "string",
+        "description": "Possible values for the status of the trouble ticket",
+        "enum": [
+          "open",
+          "acknowledged",
+          "rejected",
+          "pending",
+          "held",
+          "inprogress",
+          "cancelled",
+          "closed",
+          "resolved"
+        ]
+      },
+      "Error": {
+        "required": [
+          "code",
+          "reason"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Application relevant detail, defined in the API or a common list."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Explanation of the reason for the error which can be shown to a client user."
+          },
+          "message": {
+            "type": "string",
+            "description": "More details and corrective actions related to the error which can be shown to a client user."
+          },
+          "status": {
+            "type": "string",
+            "description": "HTTP Error code extension"
+          },
+          "referenceError": {
+            "type": "string",
+            "description": "URI of documentation describing the error.",
+            "format": "uri"
+          },
+          "@baseType": {
+            "type": "string",
+            "description": "When sub-classing, this defines the super-class."
+          },
+          "@schemaLocation": {
+            "type": "string",
+            "description": "A URI to a JSON-Schema file that defines additional attributes and relationships",
+            "format": "uri"
+          },
+          "@type": {
+            "type": "string",
+            "description": "When sub-classing, this defines the sub-class entity name."
+          }
+        },
+        "description": "Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)"
+      },
+      "caseNumber_attachments_body": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the attachment"
+          }
+        }
+      },
+      "inline_response_201": {
+        "type": "object",
+        "properties": {
+          "attachmentId": {
+            "type": "string",
+            "description": "The unique identifier of the uploaded attachment"
+          },
+          "href": {
+            "type": "string",
+            "description": "The URL to access the uploaded attachment",
+            "format": "uri"
+          }
+        }
+      },
+      "caseNumber_attachments_body_1": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          },
+          "description": {
+            "type": "string",
+            "description": "Optional description of the attachment"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json;charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json;charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Forbidden",
+        "content": {
+          "application/json;charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found",
+        "content": {
+          "application/json;charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "Method Not Allowed",
+        "content": {
+          "application/json;charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Conflict": {
+        "description": "Conflict",
+        "content": {
+          "application/json;charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json;charset=utf-8": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "ID": {
+        "name": "id",
+        "in": "path",
+        "description": "The unique identifier of an entity.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "CaseNumber": {
+        "name": "caseNumber",
+        "in": "path",
+        "description": "Identifier of the Case. This may be an alias for the ID of the proxied Case.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Fields": {
+        "name": "fields",
+        "in": "query",
+        "description": "Comma-separated properties to be provided in response",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "IncludeNotes": {
+        "name": "includeNotes",
+        "in": "query",
+        "description": "Use this flag to include Case Notes",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "Offset": {
+        "name": "offset",
+        "in": "query",
+        "description": "Requested index for start of items to be provided in response",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "Limit": {
+        "name": "limit",
+        "in": "query",
+        "description": "Requested number of items to be provided in response",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "CreatedFrom": {
+        "name": "createdFrom",
+        "in": "query",
+        "description": "Beginning date portion of a date range query to search for a matching set of items",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "CreatedTo": {
+        "name": "createdTo",
+        "in": "query",
+        "description": "Ending date portion of a date range query to search for a matching set of items",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "CreatedSince": {
+        "name": "createdSince",
+        "in": "query",
+        "description": "Retrieve the set of items created since this date",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "CaseStatus": {
+        "name": "caseStatus",
+        "in": "query",
+        "description": "Retrieve the set of cases with this status",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "$ref": "#/components/schemas/TacCaseStatus"
+        }
+      },
+      "VendorRmaNumber": {
+        "name": "vendorRmaNumber",
+        "in": "query",
+        "description": "Retrieve the set of cases with this RMA number",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -14,6 +14,7 @@
         <module>plugin-interface</module>
         <module>plugin-impl-X</module>
         <module>schema-validation-module</module>
+        <module>molex-api-client</module>
     </modules>
 
     <properties>
@@ -30,6 +31,7 @@
 
     <dependencyManagement>
         <dependencies>
+
             <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -121,6 +123,36 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring.boot.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.5.0</version>
+                    <configuration>
+                        <!-- Common configurations for surefire, like JVM options, test patterns, etc. -->
+                    </configuration>
+                </plugin>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-jar-plugin</artifactId>
+                  <version>2.2</version>
+                </plugin>
+                <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>build-helper-maven-plugin</artifactId>
+                  <version>3.6.0</version>
+                </plugin>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-javadoc-plugin</artifactId>
+                  <version>3.10.0</version>
+                </plugin>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-source-plugin</artifactId>
+                  <version>3.3.1</version>
+                </plugin>
+
+                <!-- Other plugins -->
             </plugins>
         </pluginManagement>
     </build>
