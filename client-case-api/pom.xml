@@ -138,6 +138,9 @@
               <configOptions>
                 <useJakartaEe>true</useJakartaEe>
               </configOptions>
+              <packageName>com.beaconstrategists.clientapi</packageName>
+              <apiPackage>com.beaconstrategists.clientapi.api</apiPackage>
+              <modelPackage>com.beaconstrategists.clientapi.model</modelPackage>
             </configuration>
           </execution>
         </executions>

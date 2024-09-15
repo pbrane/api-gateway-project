@@ -14,7 +14,6 @@
         <module>plugin-interface</module>
         <module>plugin-impl-X</module>
         <module>schema-validation-module</module>
-        <module>molex-api-client</module>
         <module>client-case-api</module>
     </modules>
 
