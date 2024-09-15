@@ -15,6 +15,7 @@
         <module>plugin-impl-X</module>
         <module>schema-validation-module</module>
         <module>molex-api-client</module>
+        <module>client-case-api</module>
     </modules>
 
     <properties>
@@ -27,6 +28,7 @@
         <junit.version>4.13.2</junit.version>
         <junit.jupiter.version>5.11.0</junit.jupiter.version>
         <reactive.streams.version>1.0.4</reactive.streams.version>
+        <default.package>com.beaconstrategists</default.package>
     </properties>
 
     <dependencyManagement>
