@@ -7,11 +7,11 @@
     <version>3.3.3</version>
     <relativePath/>
   </parent>
-  <groupId>com.beaconstrategists.com</groupId>
-  <artifactId>client-ticket-api</artifactId>
+  <groupId>com.beaconstrategists</groupId>
+  <artifactId>client-case-api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>client-ticket-api</name>
-  <description>Demo project for Spring Boot</description>
+  <description>Client OpenAPI project in Spring Boot</description>
   <url/>
   <licenses>
     <license/>
